@@ -7,7 +7,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-black to-zinc-900 text-white">
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-linear-to-b from-black to-zinc-900 text-white">
       <div className="w-full max-w-md">
         <h1 className="text-4xl font-black text-center mb-2 tracking-tighter italic">
           VIBE<span className="text-purple-500">SPLIT</span>

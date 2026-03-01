@@ -1,20 +1,20 @@
 'use client';
 import React, { useState } from 'react';
 
-interface Users {
+interface dost {
   name: string;
   paid: number;
 }
 
-export default function InputForm({ onCalculate }: { onCalculate: (p: Users[]) => void }) {
-  const [folks, setfolks] = useState<Users[]>([
+export default function InputForm({ onCalculate }: { onCalculate: (p: dost[]) => void }) {
+  const [folks, setfolks] = useState<dost[]>([
     { name: '', paid: 0 },
     { name: '', paid: 0 }
   ]);
 
   const addPerson = () => setfolks([...folks, { name: '', paid: 0 }]);
 
-  const updatePerson = (index: number, field: keyof Users, value: string | number) => {
+  const updatePerson = (index: number, field: keyof dost, value: string | number) => {
     const newbuddy = [...folks];
     newbuddy[index] = { ...newbuddy[index], [field]: value };
     setfolks(newbuddy);
