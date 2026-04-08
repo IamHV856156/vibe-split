@@ -15,7 +15,6 @@ export default function CreateGroup(){
         setName("");
       }
   }  
-};
 
 return(
     <div>
@@ -23,3 +22,4 @@ return(
         <button onClick={handleCreate}>Create Group</button>
     </div>
 );
+};
