@@ -6,3 +6,5 @@ export const signUp = (email,password)=>{
 export const signIn = (email,password) =>{
     return supabase.auth.signInWithPassword([email,password]);
 };
+
+export const signOut = supabase.auth.signOut();
