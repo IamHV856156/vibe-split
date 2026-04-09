@@ -5,9 +5,13 @@ const authContext = createContext();
 
 export const AuthProvider = ({children}) =>{
     const [user,setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
-        supabase.auth.getUser().then(({data})=>setUser(data.user));
+        supabase.auth.getUser().then(({data})=>{setUser(data.user);
+            setLoading(false);
+        });
+
 
         const {data:listner} = supabase.auth.onAuthStateChange((_, session)=>{
             setUser(session?.user || null);

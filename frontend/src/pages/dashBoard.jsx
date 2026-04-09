@@ -1,17 +1,18 @@
 import { useAuth } from "@/context/authContext";
 import { useEffect,useState } from "react";
 import { getGroups } from "@/features/groups/groupServices";
-import CreateGroup from "@/features/groups/components/groupCard";
+import CreateGroup from "@/features/groups/components/createGroup";
+import { supabase } from "@/services/supabaseClient";
 
 export default function Dashboard(){
     const {user} =useAuth();
     const [groups,setGroups] = useState([]);
 
     useEffect(()=>{
-        if(user){
+        if(user?.id){
             fetchGroups();
         }
-    },[user]);
+    },[user?.id]);
 
     const fetchGroups = async ()=>{
         const {data,error} = await getGroups(user.id);
@@ -24,6 +25,9 @@ export default function Dashboard(){
             <h2>DashBoard</h2>
             <p>Welcome {user?.email}</p>
 
+            <button onClick={async() => await supabase.auth.signOut()}>Logout</button>
+
+            <h3>Create Group</h3>
             <CreateGroup/>
 
             <h3>Your Groups:</h3>

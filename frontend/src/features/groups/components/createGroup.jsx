@@ -7,6 +7,10 @@ export default function CreateGroup(){
     const {user} = useAuth();
 
     const handleCreate = async ()=>{
+      if(!name) {
+        return alert("Enter Group Name");
+      }
+      
       const{error} = await createGroup(name,user.id);
       if(error){
         alert(error.message);
