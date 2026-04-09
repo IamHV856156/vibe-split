@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createGroup } from "../groupServices";
 import { useAuth } from "@/context/authContext";
 
-export default function CreateGroup(){
+export default function CreateGroup({onGroupCreated}){
     const[name,setName]=useState("");
     const {user} = useAuth();
 
@@ -10,13 +10,14 @@ export default function CreateGroup(){
       if(!name) {
         return alert("Enter Group Name");
       }
-      
+
       const{error} = await createGroup(name,user.id);
       if(error){
         alert(error.message);
       }else{
         alert("Group created");
         setName("");
+        onGroupCreated();
       }
   }  
 

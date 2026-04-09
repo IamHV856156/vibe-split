@@ -28,7 +28,7 @@ export default function Dashboard(){
             <button onClick={async() => await supabase.auth.signOut()}>Logout</button>
 
             <h3>Create Group</h3>
-            <CreateGroup/>
+            <CreateGroup onGroupCreated={fetchGroups} />
 
             <h3>Your Groups:</h3>
             {groups.map((g)=>(
