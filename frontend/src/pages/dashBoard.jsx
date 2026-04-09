@@ -32,7 +32,10 @@ export default function Dashboard(){
 
             <h3>Your Groups:</h3>
             {groups.map((g)=>(
-                <div key={g.id} >{g.name}</div>
+                <div key={g.id} >
+                    <p>{g.name}</p>
+                    <p>Invite Link: http://localhost:5173/join/{g.invite_code}</p>
+                </div>
             ))}
         </div>
     );

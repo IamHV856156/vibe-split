@@ -3,6 +3,7 @@ import Login from "../features/auth/pages/login";
 import Signup from "../features/auth/pages/signup";
 import Dashboard from "@/pages/dashBoard";
 import ProtectedRoute from "@/features/auth/components/protectedRoute";
+import JoinGroup from "@/pages/joinGroup";
 export default function AppRoutes(){
     return(
         <BrowserRouter>
@@ -11,7 +12,7 @@ export default function AppRoutes(){
 
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
-            
+            <Route path="/join/:code" element={<JoinGroup/>}/>
             <Route path="/dashboard" element={
             <ProtectedRoute>
                 <Dashboard/>
