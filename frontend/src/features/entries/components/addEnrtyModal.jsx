@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { addEntry } from "../entryService";
 import { useAuth } from "@/context/authContext";
-const AddEnrtyModal = ({groupId, onEntryAdded}) =>{
+const AddEnrtyModal = ({groupId}) =>{
     const {user} = useAuth();
     const [amount, setAmount] = useState("");
     const [type, setType] = useState("expense");
@@ -20,8 +20,10 @@ const AddEnrtyModal = ({groupId, onEntryAdded}) =>{
          alert(error.message);   
         }else{
             alert("Entry added");
-            onEntryAdded();
-        };
+            setAmount("");
+            setDesc("");
+            setType("expense");
+        }
     };
 
     return(

@@ -1,12 +1,20 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useEntries } from "../useEntries";
 import { calculateBalance, calculateSplit } from "@/utils/calculation";
-import { calculateSettelment } from "@/utils/settelment";
+import { calculateSettlement } from "@/utils/settelment";
+import { useMembers } from "@/features/members/useMembers";
+import EditEntryModal from "./editEntryModal";
 const EntryList = ({groupId,reloading,isAdmin}) =>{
-    const {entries,loading,fetchEntries} = useEntries(groupId);
+    const { entries, loading, fetchEntries, deleteEntry, updateEntry } = useEntries(groupId);
     const {totalExpense, totalSaving, balance} = calculateBalance(entries);
     const {totalExpense: splitExpense, perPerson, balances} = calculateSplit(entries);
-    const settlment = calculateSettelment(balances);
+    const [editingEntry, setEditingEntry] = useState(null);
+    const settlment = calculateSettlement(entries);
+    const { members } = useMembers(groupId);
+
+    const userMap = Object.fromEntries(
+        members.map(m => [m.id, m.name])
+    );
     useEffect(()=>{
         fetchEntries();
     },[reloading]);
@@ -39,26 +47,32 @@ const EntryList = ({groupId,reloading,isAdmin}) =>{
             <div>
                 <h3>Settlment</h3>
                 {settlment.length === 0 ? 
-                (<p>All Settled</p>):(settlment.map((s,i)=>(
-                    <p key={i}>
-                        {s.from} - pays INR{s.amount} - {s.to}
-                    </p>
-                ))
-            )}
+                (<p>All Settled</p>):(settlment.map((s,i)=>{
+                            return(
+                                <p key={i}>
+                                    {userMap[s.from] || "Unknown"} pays INR {Math.round(s.amount)} to{" "}
+        {userMap[s.to] || "Unknown"}
+                                </p>
+                            );
+                        })
+                    )}
             </div>
             {/* entries view */}
             <h4>Entries</h4>
+            <EditEntryModal entry={editingEntry} onClose={() => setEditingEntry(null)} onSave={updateEntry}/>
             {entries.map((e)=>{
                 const isSaving = e.type === "saving";
                 return(
                 <div key={e.id}>
                     <p>{e.type} - INR{e.amount}</p>
                     <p>{e.description}</p>
-
+                    <button onClick={() => setEditingEntry(e)}>Delete</button>
                     {isSaving && !isAdmin ?(
                         <p>Only Admin can Edit savings</p>
-                    ):(<button>Edit</button>)}
+                    ):(<button onClick={() => updateEntry(e.id, {amount: e.amount + 100 })}>Edit</button>
+                    )}
                 </div>
+                
                 );
             })}
         </div>
