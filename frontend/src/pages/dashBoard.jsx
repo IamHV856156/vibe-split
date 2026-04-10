@@ -1,28 +1,12 @@
 import { useAuth } from "@/context/authContext";
-import { useEffect,useState } from "react";
-import { getGroups } from "@/features/groups/groupServices";
 import CreateGroup from "@/features/groups/components/createGroup";
 import { logOut } from "@/features/auth/authServices";
-import EntryList from "@/features/entries/components/entryList";
-import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
+import { useGroups } from "@/features/groups/useGroups";
+import GroupCard from "@/features/groups/components/groupCard";
 
 export default function Dashboard(){
     const {user} =useAuth();
-    const [groups,setGroups] = useState([]);
-
-    // useEffect(()=>{
-    //     if(user?.id){
-    //         fetchGroups();
-    //     }
-    // },[user?.id]);
-
-    const fetchGroups = async ()=>{
-        const {data,error} = await getGroups(user.id);
-         console.log("GROUP RAW DATA:", data, error);
-        if(!error){
-            setGroups(data.map((item)=> item.groups).filter(Boolean));
-        };
-    }
+    const {groups,loading, fetchGroups} = useGroups(user?.id);
 
     const handleLogout = async () =>{
         const {error} = await logOut();
@@ -30,6 +14,10 @@ export default function Dashboard(){
             console.log("Logout Error:",error);
         }
     };
+    if(loading){
+        return(<p>Loading groups...</p>);
+    }
+
     return(
         <div>
             <h2>DashBoard</h2>
@@ -41,12 +29,7 @@ export default function Dashboard(){
             <CreateGroup onGroupCreated={fetchGroups} />
             <h3>Your Groups:</h3>
             {groups.map((g)=>(
-                <div key={g.id} >
-                    <p>{g.name}</p>
-                    <AddEnrtyModal groupId={g.id}/>
-                    <EntryList groupId={g.id} isAdmin={user.id === g.created_by}/>
-                    <p>Invite Code: {g.invite_code}</p>
-                </div>
+                <GroupCard key={g.id} group={g} user={user}/>
             ))}
         </div>
     );

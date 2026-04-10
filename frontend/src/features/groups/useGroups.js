@@ -1,6 +1,5 @@
 import { useState,useEffect } from "react";
 import { getGroups } from "./groupServices";
-import { getgroups } from "node:process";
 export const useGroups = (userid) =>{
     const [groups,setGroups] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,9 +9,9 @@ export const useGroups = (userid) =>{
 
         setLoading(true);
 
-        const {data,error} = await getgroups(userid);
+        const {data,error} = await getGroups(userid);
         if(!error && data){
-            const cleanGroups = data.map((item)=>item.groups).filter((g)=>g !== null);
+            const cleanGroups = data.map((item)=>item.groups).filter(Boolean);
             setGroups(cleanGroups);
         }
 
