@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { getGroups } from "@/features/groups/groupServices";
 import CreateGroup from "@/features/groups/components/createGroup";
 import { supabase } from "@/services/supabaseClient";
+import { logOut } from "@/features/auth/authServices";
 
 export default function Dashboard(){
     const {user} =useAuth();
@@ -22,25 +23,28 @@ export default function Dashboard(){
     }
 
     const testInsert = async () => {
-  const { data: userData } = await supabase.auth.getUser();
+        const { data: userData } = await supabase.auth.getUser();
+        const user = userData.user;
+        const { error } = await supabase.from("profiles").insert([
+            {
+                id: user.id,
+                name: "Test User 2",
+            },]);
+            console.log("TEST INSERT ERROR:", error);
+    };
 
-  const user = userData.user;
-
-  const { error } = await supabase.from("profiles").insert([
-    {
-      id: user.id,
-      name: "Test User 2",
-    },
-  ]);
-
-  console.log("TEST INSERT ERROR:", error);
-};
+    const handleLogout = async () =>{
+        const {error} = await logOut();
+        if (error) {
+            console.log("Logout Error:",error);
+        }
+    };
     return(
         <div>
             <h2>DashBoard</h2>
             <p>Welcome {user?.email}</p>
 
-            <button onClick={async() => await supabase.auth.signOut()}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
 
             <h3>Create Group</h3>
             <CreateGroup onGroupCreated={fetchGroups} />

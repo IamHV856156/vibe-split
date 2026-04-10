@@ -26,8 +26,22 @@ CREATE TABLE profiles (
   created_at TIMESTAMP DEFAULT now()
 );
 
+-- entries table
+CREATE TABLE entries (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  group_id uuid REFERENCES groups(id) ON DELETE CASCADE,
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+
+  amount NUMERIC NOT NULL,
+  type TEXT CHECK (type IN ('expense', 'saving')) NOT NULL,
+  description TEXT,
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
 
 --RLS Policies
+
 --for groups table
 ALTER TABLE groups ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can create groups"
@@ -59,3 +73,25 @@ WITH CHECK (auth.uid() = id);
 CREATE POLICY "Users can view profiles"
 ON profiles FOR SELECT
 USING (true);
+
+--for entries table
+
+ALTER TABLE entries ENABLE ROW LEVEL SECURITY;
+
+-- members can insert
+CREATE POLICY "Members can add entries"
+ON entries
+FOR INSERT
+WITH CHECK (
+  auth.uid() = user_id
+);
+
+-- members can view entries of their groups
+CREATE POLICY "Members can view entries"
+ON entries
+FOR SELECT
+USING (
+  group_id IN (
+    SELECT group_id FROM members WHERE user_id = auth.uid()
+  )
+);
