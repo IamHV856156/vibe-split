@@ -20,6 +20,21 @@ export default function Dashboard(){
             setGroups(data);
         };
     }
+
+    const testInsert = async () => {
+  const { data: userData } = await supabase.auth.getUser();
+
+  const user = userData.user;
+
+  const { error } = await supabase.from("profiles").insert([
+    {
+      id: user.id,
+      name: "Test User 2",
+    },
+  ]);
+
+  console.log("TEST INSERT ERROR:", error);
+};
     return(
         <div>
             <h2>DashBoard</h2>
@@ -29,7 +44,7 @@ export default function Dashboard(){
 
             <h3>Create Group</h3>
             <CreateGroup onGroupCreated={fetchGroups} />
-
+            <button onClick={testInsert}>Test Profile Insert</button>
             <h3>Your Groups:</h3>
             {groups.map((g)=>(
                 <div key={g.id} >

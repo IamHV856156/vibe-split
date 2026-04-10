@@ -102,14 +102,7 @@ export default function Login() {
         }}
       />
 
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={async () => {
-  const { data, error } = await signIn("test@gmail.com", "123456789");
-  console.log("DIRECT LOGIN:", data, error);
-}}>
-  Test Direct Login
-</button>
-
+      <button onClick={handleLogin}>Login</button>     
       {/* DEBUG UI */}
       <p>Email: {email}</p>
       <p>Password: {password}</p>

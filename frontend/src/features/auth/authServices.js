@@ -11,10 +11,15 @@
 
 import { supabase } from "../../services/supabaseClient";
 
-export const signIn = (email, password) => {
+export const signIn = (email, password,name) => {
   return supabase.auth.signInWithPassword({
     email: email,
     password: password,
+    options:{
+      data:{
+        name:name,
+      },
+    },
   });
 };
 
