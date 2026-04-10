@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useEntries } from "../useEntries";
+import { calculateBalance } from "@/utils/calculation";
 const EntryList = ({groupId,reloading}) =>{
     const {entries,loading,fetchEntries} = useEntries(groupId);
+    const {totalExpense, totalSaving, balance} = calculateBalance(entries);
     useEffect(()=>{
         fetchEntries();
     },[reloading]);
@@ -14,6 +16,11 @@ const EntryList = ({groupId,reloading}) =>{
     console.log("group:",groupId);
     return(
         <div>
+            <div>
+                <p>Expense: INR{totalExpense}</p>
+                <p>Saving: INR{totalSaving}</p>
+                <p>Balance: INR{balance}</p>
+            </div>
             <p>Total entries: {entries.length}</p>
             {entries.map((e)=>{
                 console.log("Entry:",e);
