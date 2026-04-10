@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { addEntry } from "../entryService";
 import { useAuth } from "@/context/authContext";
-const AddEnrtyModal = ({groupId}) =>{
+const AddEnrtyModal = ({groupId, onEntryAdded}) =>{
     const {user} = useAuth();
     const [amount, setAmount] = useState("");
-    const [type, setType] = useState("expenses");
+    const [type, setType] = useState("expense");
     const [desc, setDesc] = useState("");
 
     const handleAdd = async () =>{
@@ -12,20 +12,22 @@ const AddEnrtyModal = ({groupId}) =>{
             group_id:groupId,
             user_id:user.id,
             amount: Number(amount),
-            type,
+            type:type.toLowerCase(),
             description: desc,
         });
+       
         if (error) {
          alert(error.message);   
         }else{
             alert("Entry added");
+            onEntryAdded();
         };
     };
 
     return(
         <div>
             <input placeholder="Amount" onChange={(e)=> setAmount(e.target.value)}/>
-            <select onChange={(e)=> setType(e.target.value)}>
+            <select value={type} onChange={(e)=> setType(e.target.value)}>
                 <option value="expense">Expense</option>
                 <option value="saving">Saving</option>
             </select>

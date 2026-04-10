@@ -1,14 +1,11 @@
 -- groups table 
-
 CREATE TABLE groups (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
+  invite_code TEXT UNIQUE,
   created_by uuid REFERENCES auth.users(id),
   created_at TIMESTAMP DEFAULT now()
 );
-
--- Adding invite code colum in group table
-ALTER TABLE groups ADD COLUMN invite_code TEXT UNIQUE;
 
 --Members table
 CREATE TABLE members (
@@ -31,15 +28,21 @@ CREATE TABLE entries (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   group_id uuid REFERENCES groups(id) ON DELETE CASCADE,
   user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
-
   amount NUMERIC NOT NULL,
   type TEXT CHECK (type IN ('expense', 'saving')) NOT NULL,
   description TEXT,
-
   created_at TIMESTAMP DEFAULT now()
 );
 
-
+--test entry
+insert into entries (group_id, user_id, amount, type, description)
+values (
+  '1aac8c57-910d-4083-8b68-c8f08b5f4d6f',
+  '206ee474-1f4c-4558-906f-980ae24cb8fa',
+  100,
+  'expense',
+  'test expense'
+);
 --RLS Policies
 
 --for groups table
