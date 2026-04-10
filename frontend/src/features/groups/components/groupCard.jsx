@@ -3,13 +3,13 @@ import { useMembers } from "@/features/members/useMembers";
 import EntryList from "@/features/entries/components/entryList";
 import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 import MemberList from "../../members/components/MemberList";
+import InviteButton from "./inviteButton";
 
-const {user} =useAuth();
-const{members} = useMembers(group.id);
-const currentUser = members.find(m=>m.user_id === user.id);
-const isAdmin = currentUser?.role === "admin";
 const GroupCard =({group,user}) =>{
-
+    const {user} =useAuth();
+    const{members} = useMembers(group.id);
+    const currentUser = members.find(m=>m.user_id === user.id);
+    const isAdmin = currentUser?.role === "admin";
     return(
         <div>
             <h3>{group.name}</h3>

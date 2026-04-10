@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDom from 'react-dom/client';
 import AppRoutes from './app/routes';
-import { AuthProvider } from './context/authContext';
+import Providers from './app/providers';
 
 ReactDom.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
+    <Providers>
     <AppRoutes />
-    </AuthProvider>
+    </Providers>
   </React.StrictMode>,
 );

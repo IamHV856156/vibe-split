@@ -9,8 +9,7 @@ export default function Login(){
     const navigate = useNavigate();
 
     const handleLogin = async()=>{
-        const {data,error} = await signIn(email,password);
-        console.log("LOGIN DATA:", data);
+        const {error} = await signIn(email,password);
         if(error){
             alert(error.message);
         }else{
