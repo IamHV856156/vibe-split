@@ -11,20 +11,20 @@ export default function Signup(){
         if (!name) {
             return alert("Name is required");
         }
-        const {data,error} = await signUp(email,password);
+        const {data,error} = await signUp(email,password,name);
         if(error){
             alert(error.message);
         }else{
             alert("Please Check Your Email");
         }
-        const user = data.user;
+        // const user = data.user;
 
-        await supabase.from("profiles").insert([
-            {
-                id:user.id,
-                name:name,
-            },
-        ]),
+        // await supabase.from("profiles").insert([
+        //     {
+        //         id:user.id,
+        //         name:name,
+        //     },
+        // ]),
         alert("Signup Success");
     };
 
