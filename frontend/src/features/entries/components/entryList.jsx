@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react";
+import { useAuth } from "@/context/authContext";
 import { useEntries } from "../useEntries";
 import { calculateBalance, calculateSplit } from "@/utils/calculation";
 import { calculateSettlement } from "@/utils/settelment";
@@ -11,13 +12,12 @@ const EntryList = ({groupId,reloading,isAdmin}) =>{
     const [editingEntry, setEditingEntry] = useState(null);
     const settlment = calculateSettlement(entries);
     const { members } = useMembers(groupId);
+    const {user} = useAuth();
 
     const userMap = Object.fromEntries(
         members.map(m => [m.id, m.name])
     );
-    useEffect(()=>{
-        fetchEntries();
-    },[reloading]);
+  
     if (loading) {
         return (<p>Loading entries....</p>);
     }
@@ -61,15 +61,16 @@ const EntryList = ({groupId,reloading,isAdmin}) =>{
             <h4>Entries</h4>
             <EditEntryModal entry={editingEntry} onClose={() => setEditingEntry(null)} onSave={updateEntry}/>
             {entries.map((e)=>{
+                const isOwned = e.user_id === user?.id;
                 const isSaving = e.type === "saving";
                 return(
                 <div key={e.id}>
                     <p>{e.type} - INR{e.amount}</p>
                     <p>{e.description}</p>
-                    <button onClick={() => setEditingEntry(e)}>Delete</button>
-                    {isSaving && !isAdmin ?(
+                    <button onClick={() => deleteEntry(e.id)}>Delete</button>
+                    {(isAdmin || (isOwned && !isSaving)) ?(<button onClick={() => setEditingEntry(e)}>Edit</button>
+                    ):(
                         <p>Only Admin can Edit savings</p>
-                    ):(<button onClick={() => updateEntry(e.id, {amount: e.amount + 100 })}>Edit</button>
                     )}
                 </div>
                 
