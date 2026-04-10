@@ -10,6 +10,7 @@ export const useGroups = (userid) =>{
         setLoading(true);
 
         const {data,error} = await getGroups(userid);
+        console.log("GROUP RAW:", data, error);
         if(!error && data){
             const cleanGroups = data.map((item)=>item.groups).filter(Boolean);
             setGroups(cleanGroups);

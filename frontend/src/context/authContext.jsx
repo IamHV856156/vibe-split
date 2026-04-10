@@ -11,8 +11,6 @@ useEffect(() => {
   const handleUser = async (user) => {
     if (!user) return;
 
-    console.log("USER:", user.id);
-
     const { data: profile, error } = await supabase
       .from("profiles")
       .select("*")
