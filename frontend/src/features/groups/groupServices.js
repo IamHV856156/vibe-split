@@ -17,5 +17,5 @@ export const createGroup = async (name, userid) =>{
 };
 
 export const getGroups = async (userid)=>{
-    return await supabase.from("groups").select("*").eq("created_by",userid);
+    return await supabase.from("members").select(`group_id,groups(*)`).eq("user_id",userid);
 };

@@ -1,33 +1,36 @@
-import { useParams,useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/services/supabaseClient";
 import { useAuth } from "@/context/authContext";
 
 export default function JoinGroup(){
-    const {code} = useParams();
+    const [code,setCode] = useState("");
     const {user} = useAuth();
     const navigate = useNavigate();
 
     const handleJoin = async () =>{
-        //fing group
-        const {data: group} = await supabase.from("groups").select("*").eq("invite_code",code).single();
-
+        //find group
+        const {data: group,error:groupError} = await supabase.from("groups").select("*").eq("invite_code",code).maybeSingle();
+        console.log("Group Found:", group,groupError);
+        console.log("Code:",code);
         if(!group){
             return alert("Invalid invite");
         }
 
         //add members
-        const {error} = await supabase.from("members").insert([
+        const {error: joinError} = await supabase.from("members").insert([
             {
                 user_id:user.id,
                 group_id:group.id,
             },
         ]);
+        console.log("Join Error",joinError);
 
-        if (error) {
-            return alert(error.message);
+        if (joinError) {
+            return alert(joinError.message);
         }
 
-        alert(`Joined Group : ${group}`);
+        alert(`Joined Group : ${group.name}`);
 
         // after join member will we send to dashboard
         navigate("/dashboard");
@@ -35,7 +38,7 @@ export default function JoinGroup(){
     return(
         <div>
             <h2>Join Group</h2>
-            <p>Invite Code:{code}</p>
+            <input placeholder="Enter Code" value={code} onChange={(e)=> setCode(e.target.value)}/>
             <button onClick={handleJoin}>Join Now</button>
         </div>
     );

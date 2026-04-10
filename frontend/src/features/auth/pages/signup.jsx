@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { signUp } from "../authServices";
 import { supabase } from "@/services/supabaseClient";
+import { Navigate } from "react-router-dom";
 
 export default function Signup(){
     const[name,setName] = useState("");
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
+    const navigate = Navigate();
 
     const handleSignup = async()=>{
         if (!name) {
@@ -17,14 +19,15 @@ export default function Signup(){
         }else{
             alert("Please Check Your Email");
         }
-        // const user = data.user;
+        const user = data.user;
 
-        // await supabase.from("profiles").insert([
-        //     {
-        //         id:user.id,
-        //         name:name,
-        //     },
-        // ]),
+        await supabase.from("profiles").insert([
+            {
+                id:user.id,
+                name:name,
+            },
+        ]),
+        navigate("/login");
         alert("Signup Success");
     };
 

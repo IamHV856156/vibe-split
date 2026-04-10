@@ -9,18 +9,18 @@ import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 export default function Dashboard(){
     const {user} =useAuth();
     const [groups,setGroups] = useState([]);
-    const [reload,setReload] = useState(0);
 
-    useEffect(()=>{
-        if(user?.id){
-            fetchGroups();
-        }
-    },[user?.id]);
+    // useEffect(()=>{
+    //     if(user?.id){
+    //         fetchGroups();
+    //     }
+    // },[user?.id]);
 
     const fetchGroups = async ()=>{
         const {data,error} = await getGroups(user.id);
+         console.log("GROUP RAW DATA:", data, error);
         if(!error){
-            setGroups(data);
+            setGroups(data.map((item)=> item.groups).filter(Boolean));
         };
     }
 
@@ -43,9 +43,9 @@ export default function Dashboard(){
             {groups.map((g)=>(
                 <div key={g.id} >
                     <p>{g.name}</p>
-                    <AddEnrtyModal groupId={g.id} onEntryAdded={()=> setReload((prev)=>prev+1)}/>
-                    <EntryList groupId={g.id} reloading={reload}/>
-                    <p>Invite Link: http://localhost:5173/join/{g.invite_code}</p>
+                    <AddEnrtyModal groupId={g.id}/>
+                    <EntryList groupId={g.id} isAdmin={user.id === g.created_by}/>
+                    <p>Invite Code: {g.invite_code}</p>
                 </div>
             ))}
         </div>
