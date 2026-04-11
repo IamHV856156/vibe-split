@@ -1,5 +1,11 @@
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/authContext";
 
-export default function Providers({ children }) {
-  return <AuthProvider>{children}</AuthProvider>;
-}
+const Providers = ({children}) => {
+  return(
+    <AuthProvider>
+      {children}
+    </AuthProvider>
+  );
+};
+
+export default Providers;
