@@ -4,6 +4,7 @@ import EntryList from "@/features/entries/components/entryList";
 import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 import MemberList from "../../members/components/MemberList";
 import InviteButton from "./inviteButton";
+import { Card,CardContent,CardHeader, CardTitle } from "@/components/ui/card";
 
 const GroupCard =({group}) =>{
     const {user} =useAuth();
@@ -11,14 +12,21 @@ const GroupCard =({group}) =>{
     const currentUser = members.find((m)=>m.user_id === user?.id);
     const isAdmin = currentUser?.role === "admin";
     return(
-        <div>
-            <h3>{group.name}</h3>
+        <Card className="mb-4 shadow-md">
+            <CardHeader>
+                <CardTitle><h3>{group.name}</h3></CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+            //inviteButton
             <InviteButton code={group.invite_code} />
+            //Member
             <MemberList groupId={group.id}/>
-            {/* <p>{isAdmin ? "Admin" : "Member"}</p> */}
+            //Add Entry
             <AddEnrtyModal groupId={group.id}/>
+            //Entries
             <EntryList groupId={group.id} isAdmin={isAdmin}/>
-        </div>
+            </CardContent>
+        </Card>
     );
 }
 

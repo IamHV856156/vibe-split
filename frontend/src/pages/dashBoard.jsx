@@ -13,11 +13,15 @@ export default function Dashboard() {
   }
   console.log("GROUPS STATE:", groups);
   return (
-    <div>
-      <h2>Dashboard</h2>
-      {groups.map((g) => (
-        <GroupCard key={g.id} group={g} />
-      ))}
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+        <div className="space-y-6">
+          {groups.map((g) => (
+            <GroupCard key={g.id} group={g} />
+            ))}
+        </div>
+      </div>
     </div>
   );
 }
