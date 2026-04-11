@@ -11,7 +11,6 @@ export default function Dashboard() {
   if (groups.length === 0) {
     return(<p>No groups yet</p>);
   }
-  console.log("GROUPS STATE:", groups);
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto">

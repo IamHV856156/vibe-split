@@ -17,13 +17,13 @@ const GroupCard =({group}) =>{
                 <CardTitle><h3>{group.name}</h3></CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-            //inviteButton
+            {/* //inviteButton */}
             <InviteButton code={group.invite_code} />
-            //Member
+            {/* //Member */}
             <MemberList groupId={group.id}/>
-            //Add Entry
+            {/* //Add Entry */}
             <AddEnrtyModal groupId={group.id}/>
-            //Entries
+            {/* //Entries */}
             <EntryList groupId={group.id} isAdmin={isAdmin}/>
             </CardContent>
         </Card>

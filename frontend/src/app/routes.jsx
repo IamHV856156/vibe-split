@@ -5,6 +5,7 @@ import Dashboard from "@/pages/dashBoard";
 import ProtectedRoute from "@/features/auth/components/protectedRoute";
 import JoinGroup from "@/pages/joinGroup";
 import OnBoarding from "@/pages/onBoarding";
+import AppLayout from "@/components/layout/appLayout";
 export default function AppRoutes(){
     return(
         <BrowserRouter>
@@ -17,7 +18,9 @@ export default function AppRoutes(){
             <Route path="/join" element={<JoinGroup/>}/>
             <Route path="/dashboard" element={
             <ProtectedRoute>
-                <Dashboard/>
+                <AppLayout>
+                    <Dashboard/>
+                </AppLayout>
             </ProtectedRoute>}/>
         </Routes>
         </BrowserRouter>
