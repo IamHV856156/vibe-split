@@ -6,7 +6,7 @@ import MemberList from "../../members/components/MemberList";
 import InviteButton from "./inviteButton";
 import { Card,CardContent,CardHeader, CardTitle } from "@/components/ui/card";
 
-const GroupCard =({group}) =>{
+export default function GroupCard ({group}){
     const {user} =useAuth();
     const{members} = useMembers(group.id);
     const currentUser = members.find((m)=>m.user_id === user?.id);
@@ -31,5 +31,3 @@ const GroupCard =({group}) =>{
         </Card>
     );
 }
-
-export default GroupCard;
