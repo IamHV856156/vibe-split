@@ -17,7 +17,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed md:relative top-0 left-0 z-50 h-full bg-white border-r flex flex-col justify-between p-4",
+          "fixed md:relative top-0 left-0 z-50 h-full border-r border-white/20 flex flex-col justify-between p-4",
           "transition-all duration-300 ease-in-out",
 
           // width
@@ -34,7 +34,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
           {/* Logo + Toggle */}
           <div className="flex items-center justify-between mb-8">
             {!collapsed && (
-              <h1 className="text-xl font-bold tracking-tight">
+              <h1 className="text-xl text-white font-bold tracking-tight">
                  Vibe Split
               </h1>
             )}
@@ -82,7 +82,7 @@ const NavItem = ({to="/", icon, label, collapsed }) => {
       {!collapsed && <span className="text-sm">{label}</span>}
       {/* tooltip (when collapsed) */}
       {collapsed && (
-        <span className="absolute left-14 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+        <span className="absolute left-14 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
           {label}
         </span>
       )}

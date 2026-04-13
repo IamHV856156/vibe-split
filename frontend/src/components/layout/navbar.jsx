@@ -1,11 +1,12 @@
 import { Menu } from "lucide-react";
 import { useAuth } from "@/context/authContext";
+import { Avatar,AvatarFallback,AvatarImage } from "../ui/avatar";
 
 const Navbar = ({ setMobileOpen }) => {
   const { user } = useAuth();
 
   return (
-    <header className="h-14 bg-white border-b flex items-center justify-between px-4 md:px-6">
+    <header className="h-14 border-b border-white/20 flex items-center justify-between px-4 md:px-6">
 
       {/* Mobile menu */}
       <button
@@ -20,13 +21,16 @@ const Navbar = ({ setMobileOpen }) => {
       </h2>
 
       <div className="flex items-center gap-3">
-        <span className="hidden sm:block text-sm text-gray-600">
+        <span className="hidden sm:block text-sm text-white">
           {user?.email}
         </span>
 
-        <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-          {user?.email?.charAt(0).toUpperCase()}
-        </div>
+        <Avatar className="w-8 h-8">
+          <AvatarImage src={user.image || ""} alt={user.name}/>
+            <AvatarFallback className="rounded-full bg-linear-to-br from-violet-500 via-black to-fuchsia-500 text-white flex items-center justify-center font-semibold">
+              {user?.email?.charAt(0).toUpperCase()}
+            </AvatarFallback>
+        </Avatar>
       </div>
     </header>
   );
