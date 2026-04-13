@@ -12,13 +12,15 @@ const GroupCard =({group}) =>{
     const currentUser = members.find((m)=>m.user_id === user?.id);
     const isAdmin = currentUser?.role === "admin";
     return(
-        <Card className="mb-4 shadow-md">
-            <CardHeader>
-                <CardTitle><h3>{group.name}</h3></CardTitle>
+        <Card className="mb-4 shadow-md bg-red-300 grid grid-cols-1">
+            <CardHeader className="bg-fuchsia-800 flex justify-between items-center">
+                <CardTitle className="w-[50%]">
+                    <h1 className="bg-emerald-300 text-5xl font-extrabold ">{group.name}</h1>
+                </CardTitle>
+                <InviteButton code={group.invite_code} className="w-[50%]" />
             </CardHeader>
             <CardContent className="space-y-4">
             {/* //inviteButton */}
-            <InviteButton code={group.invite_code} />
             {/* //Member */}
             <MemberList groupId={group.id}/>
             {/* //Add Entry */}

@@ -1,5 +1,6 @@
 import { Home, Users, Plus, LogOut, PanelLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   return (
@@ -48,9 +49,9 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
 
           {/* Nav */}
           <nav className="space-y-2">
-            <Item icon={<Home size={18} />} label="Dashboard" collapsed={collapsed} />
-            <Item icon={<Users size={18} />} label="Groups" collapsed={collapsed} />
-            <Item icon={<Plus size={18} />} label="Add Entry" collapsed={collapsed} />
+            <NavItem to="/dashboard" icon={<Home size={18} />} label="Dashboard" collapsed={collapsed} />
+            <NavItem to="/groups" icon={<Users size={18} />} label="Groups" collapsed={collapsed} />
+            <NavItem to="/join" icon={<Plus size={18} />} label="Join" collapsed={collapsed} />
           </nav>
         </div>
 
@@ -64,20 +65,28 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   );
 };
 
-const Item = ({ icon, label, collapsed }) => {
+const NavItem = ({to="/", icon, label, collapsed }) => {
   return (
-    <div className="group relative flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+     <NavLink
+      to={to}
+      className={({ isActive }) =>
+        cn(
+          "group relative flex items-center gap-3 p-2 rounded-lg transition",
+          isActive
+            ? "bg-black text-white"
+            : "hover:bg-gray-100 text-gray-700"
+        )
+      }
+    >
       {icon}
-
       {!collapsed && <span className="text-sm">{label}</span>}
-
       {/* tooltip (when collapsed) */}
       {collapsed && (
         <span className="absolute left-14 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
           {label}
         </span>
       )}
-    </div>
+      </NavLink>
   );
 };
 

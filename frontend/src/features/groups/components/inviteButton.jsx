@@ -7,12 +7,12 @@ export default function InviteButton({ code }) {
   };
 
   return (
-    <Card>
-      <CardContent>
-        <CardHeader>
+    <Card className="text-xl font-bold w-[50%]">
+      <CardContent className=" flex items-center" >
+        <CardHeader className=" w-[60%]">
           Copy Invite Code:
         </CardHeader>
-        <Button onClick={copyCode}>
+        <Button onClick={copyCode} className=" w-[40%]" >
           {code}
         </Button>
       </CardContent>

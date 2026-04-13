@@ -38,7 +38,7 @@ export const createGroup = async (name, userid) =>{
 
 // get groups
 export const getGroups = async (userid)=>{
-    const {data:members,error} = await supabase.from("members").select("group_id").eq("user_id",userid);
+    const {data:members,error} = await supabase.from("members").select("*").eq("user_id",userid);
 
     if (error) {
         return{error};

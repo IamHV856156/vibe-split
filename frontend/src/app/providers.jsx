@@ -1,11 +1,9 @@
 import { AuthProvider } from "@/context/authContext";
 
-const Providers = ({children}) => {
+export default function Providers ({children}) {
   return(
     <AuthProvider>
       {children}
     </AuthProvider>
   );
 };
-
-export default Providers;
