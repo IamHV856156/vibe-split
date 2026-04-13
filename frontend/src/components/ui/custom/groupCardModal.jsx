@@ -27,10 +27,6 @@ export default function GroupCardSmall({group}){
                 <Badge variant="secondary">
                     {group.members_count || 1}
                 </Badge>
-            {/* <CardContent className="p-4 space-y-2">
-                <h3 className="font-semibold">{group.name}</h3>
-                <p className="text-sm text-gray-500">Invite:{group.invite_code}</p>
-            </CardContent> */}
             </CardHeader>
             <CardContent>
                 <p className="text-xs text-muted-foreground">Tap to open group</p>

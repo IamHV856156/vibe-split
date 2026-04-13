@@ -1,6 +1,6 @@
 import { Home, Users, Plus, LogOut, PanelLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NavLink } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 
 const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   return (
@@ -8,7 +8,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
       {/* Mobile Overlay */}
       <div
         className={cn(
-          "fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden transition-opacity",
+          "fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden transition-opacity ",
           mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"
         )}
         onClick={() => setMobileOpen(false)}
@@ -74,7 +74,7 @@ const NavItem = ({to="/", icon, label, collapsed }) => {
           "group relative flex items-center gap-3 p-2 rounded-lg transition",
           isActive
             ? "bg-black text-white"
-            : "hover:bg-gray-100 text-gray-700"
+            : "hover:bg-gray-100 text-white"
         )
       }
     >

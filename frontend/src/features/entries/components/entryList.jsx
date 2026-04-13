@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/context/authContext";
 import { useEntries } from "../useEntries";
 import { calculateBalance, calculateSplit } from "@/utils/calculation";
@@ -6,7 +6,7 @@ import { calculateSettlement } from "@/utils/settelment";
 import { useMembers } from "@/features/members/useMembers";
 import EditEntryModal from "./editEntryModal";
 const EntryList = ({groupId,isAdmin}) =>{
-    const { entries, loading, fetchEntries, deleteEntry, updateEntry } = useEntries(groupId);
+    const { entries, loading, deleteEntry, updateEntry } = useEntries(groupId);
     const {totalExpense, totalSaving, balance} = calculateBalance(entries);
     const {totalExpense: splitExpense, perPerson, balances} = calculateSplit(entries);
     const [editingEntry, setEditingEntry] = useState(null);
