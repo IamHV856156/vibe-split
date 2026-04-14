@@ -54,7 +54,7 @@ export default function GroupDetails() {
 
       {/* MEMBERS */}
       <Card className="bg-white/5 border hover:shadow-lg border-white/10 backdrop-blur-xl rounded-2xl">
-        <CardContent className="p-4">
+        <CardContent className="p-4 ">
           <div className="flex items-center gap-2 text-white font-medium mb-3">
             <Users size={16} />
             Members ({members.length})

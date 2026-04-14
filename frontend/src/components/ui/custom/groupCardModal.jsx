@@ -2,8 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { Card,CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "../badge";
 import { Avatar,AvatarFallback, AvatarImage } from "../avatar";
+import { useMembers } from "@/features/members/useMembers";
 
 export default function GroupCardSmall({group}){
+    const {members =[]}=useMembers(group.id)
+    console.log("member:",members);
     const navigate = useNavigate();
     return(
         <Card onClick={()=> navigate(`/group/${group.id}`)} className="cursor-pointer bg-white/5 border-white/10 backdrop-blur-xl rounded-2xl hover:scale-[1.02] hover:shadow-xl transition">
@@ -25,7 +28,7 @@ export default function GroupCardSmall({group}){
                     </CardDescription>
                 </div>
                 <Badge variant="secondary" className="h-6 w-6 rounded-full font-bold text-sm">
-                    {group.members_count || 1}
+                    {members.length}
                 </Badge>
             </CardHeader>
             <CardContent>
