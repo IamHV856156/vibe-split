@@ -10,12 +10,10 @@ const AppLayout = () => {
   return (
     <div className="flex h-screen overflow-hidden relative text-white">
         {/* bg-gradient */}
-        <div className="fixed inset-0 -z-10">
-          <div className="w-full h-full bg-black"/>
-          {/* glowblobs */}
-          <div className=" absolute -top-25 -left-25 w-100 h-100 bg-purple-600/30 blur-[120px]"/>
-          <div className="absolute -bottom-25 -right-25 w-100 h-100 bg-blue-600/30 blur-[120px]"/>
-          </div>
+        <div className="absolute inset-0 bg-linear-to-b from-zinc-900 via-black to bg-zinc-800"/>
+            {/* glow blobs */}
+            <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-500 blur-[120px] opacity-30 pointer-events-none"/>
+            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500 blur-[120px] opacity-30 pointer-events-none"/>
       {/* sidebar */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}/>
       {/* main */}
