@@ -5,7 +5,7 @@ import { useAuth } from "@/context/authContext";
 import { Card,CardTitle,CardContent,CardHeader,CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, LockIcon, LockOpen, LogIn, Mail, MailOpen,} from "lucide-react";
+import { Eye, EyeOff, KeyRound, LockIcon, LockOpen, LogIn, Mail, MailOpen,} from "lucide-react";
 
 export default function Login(){
     const[email, setEmail] = useState("");
@@ -42,7 +42,7 @@ export default function Login(){
             <CardHeader className="text-center space-y-2">
                   <div className="flex justify-center">
                     <div className="p-3 rounded-full bg-white/10 border hover:bg-white/20 hover:scale-[1.03] border-white/20">
-                      <LogIn size={32} className="text-white"/>
+                      <KeyRound size={28} className="text-white"/>
                     </div>
                   </div>
                 <CardTitle className="text-2xl text-white">
@@ -55,7 +55,7 @@ export default function Login(){
             
             <CardContent className="space-y-4">
               <div className="relative" >
-                <Input placeholder="Enter your Email" key={showEmail?"text":"email"} type={showEmail?"text":"email"} value={email} onChange={(e)=> setEmail(e.target.value)}  className="w-full pr-10 bg-white/20 border border-white/20 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-purple-500 rounded-xl h-12 px-3"/>
+                <Input placeholder="Enter your Email" type="text" value={email} onChange={(e)=> setEmail(e.target.value)}  className="w-full pr-10 bg-white/20 border border-white/20 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-purple-500 rounded-xl h-12 px-3"/>
                 <Button type="button" onClick={()=> setShowEmail(!showEmail)} className="absolute right-3 top-2 bg-transparent text-gray-400 hover:text-white">
                   {showEmail ? <Mail size={18}/> : <MailOpen size={18}/>}
                 </Button>
