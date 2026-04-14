@@ -1,6 +1,7 @@
 import { Home, Users, Plus, LogOut, PanelLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink} from "react-router-dom";
+import { logOut } from "@/features/auth/authServices";
 
 const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   return (
@@ -56,7 +57,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
         </div>
 
         {/* BOTTOM */}
-        <button className="flex items-center gap-3 p-2 rounded-lg text-red-500 hover:bg-red-50 transition">
+        <button className="flex items-center gap-3 p-2 rounded-lg text-red-500 hover:bg-red-50 transition" onClick={()=> logOut()}>
           <LogOut size={18} />
           {!collapsed && "Logout"}
         </button>

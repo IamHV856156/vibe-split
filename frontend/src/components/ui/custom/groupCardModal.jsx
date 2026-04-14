@@ -24,7 +24,7 @@ export default function GroupCardSmall({group}){
                         Invite:{group.invite_code}
                     </CardDescription>
                 </div>
-                <Badge variant="secondary">
+                <Badge variant="secondary" className="h-6 w-6 rounded-full font-bold text-sm">
                     {group.members_count || 1}
                 </Badge>
             </CardHeader>
