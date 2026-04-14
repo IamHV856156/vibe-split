@@ -6,7 +6,7 @@ import { Avatar,AvatarFallback, AvatarImage } from "../avatar";
 export default function GroupCardSmall({group}){
     const navigate = useNavigate();
     return(
-        <Card onClick={()=> navigate(`/groups/${group.id}`)} className="cursor-pointer bg-white/5 border-white/10 backdrop-blur-xl rounded-2xl hover:scale-[1.02] hover:shadow-xl transition">
+        <Card onClick={()=> navigate(`/group/${group.id}`)} className="cursor-pointer bg-white/5 border-white/10 backdrop-blur-xl rounded-2xl hover:scale-[1.02] hover:shadow-xl transition">
             <CardHeader className="flex flex-row items-center gap-3">
                 {/* avatar */}
                 <Avatar className="w-10 h-10">

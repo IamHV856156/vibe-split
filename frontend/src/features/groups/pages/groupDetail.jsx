@@ -4,25 +4,47 @@ import { useMembers } from "@/features/members/useMembers";
 import EntryList from "@/features/entries/components/entryList";
 import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 import MemberList from "@/features/members/components/MemberList";
+import { List, Users } from "lucide-react";
+import { Card,CardContent } from "@/components/ui/card";
 
 export default function GroupDetails() {
-  const { id } = useParams();
+  const {groupId} = useParams();
   const {user} = useAuth();
-  const{member} = useMembers(id);
-
-  const currentUser = member.fimd((m)=>m.user_id === user?.id);
+  const { members } = useMembers(groupId);
+  const currentUser = (members || []).find((m) => m.user_id === user?.id);
   const isAdmin = currentUser?.role === "admin";
   return (
-    <div className="space-y-6">
-      {/* header */}
+    <div className="w-full px-4 md:px-6 space-y-6">
+
+      {/* HEADER */}
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Group Details</h2>
-        <AddEnrtyModal groupId={id}/>
+        <h2 className="text-2xl font-bold text-white">
+          Group Details
+        </h2>
+        <AddEnrtyModal groupId={groupId} />
       </div>
-      {/* Members */}
-      <MemberList groupId={id}/>
-      {/* entries */}
-      <EntryList groupId={id} isAdmin={isAdmin}/>
+
+      {/* MEMBERS */}
+      <Card className="bg-white/5 border hover:shadow-lg border-white/10 backdrop-blur-xl rounded-2xl">
+        <CardContent className="p-4">
+          <div className="flex items-center gap-2 text-white font-medium mb-3">
+            <Users size={16} />
+            Members ({members.length})
+          </div>
+          <MemberList groupId={groupId} createdBy={user.id} />
+        </CardContent>
+      </Card>
+
+      {/* ENTRIES */}
+      <Card className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl">
+        <CardContent className="p-4">
+          <div className="flex items-center gap-2 text-white font-medium mb-3">
+            <List size={16} />
+            Entries
+          </div>
+          <EntryList groupId={groupId} isAdmin={isAdmin} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

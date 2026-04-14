@@ -24,7 +24,7 @@ export default function AppRoutes(){
             <Route element={<AppLayout/>}>
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/groups" element={<GroupList/>}/>
-            <Route path="/group/:id" element={<GroupDetails/>}/>
+            <Route path="/group/:groupId" element={<GroupDetails/>}/>
             </Route>
             </Route>
         </Routes>
