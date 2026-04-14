@@ -48,6 +48,11 @@ export const getGroups = async (userid)=>{
     return{data:groups};
 };
 
+// get groups by groupId
+export const getGroupById = async (groupId) => {
+  return await supabase.from("groups").select("*").eq("id", groupId).single();
+};
+
 // join groups
 export const joinGroups = async (inviteCode,userid) =>{
     const {data: group} = await supabase.from("groups").select("*").eq("invite_code",inviteCode).single();

@@ -5,12 +5,29 @@ import EntryList from "@/features/entries/components/entryList";
 import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 import MemberList from "@/features/members/components/MemberList";
 import { List, Users } from "lucide-react";
-import { Card,CardContent } from "@/components/ui/card";
+import { Card,CardContent,CardTitle } from "@/components/ui/card";
+import { getGroupById } from "../groupServices";
+import { useEffect, useState } from "react";
+import InviteButton from "../components/inviteButton";
 
 export default function GroupDetails() {
   const {groupId} = useParams();
   const {user} = useAuth();
   const { members } = useMembers(groupId);
+  const [groups,setGroups] = useState(null);
+  
+  useEffect(()=>{
+    const groupName = async () =>{
+      const{data , error } = await getGroupById(groupId);
+      if(!error){
+        setGroups(data);
+        console.log("groupName:",error);
+      }
+    };
+    if(groupId){
+      groupName();
+    }
+  },[groupId]);
   const currentUser = (members || []).find((m) => m.user_id === user?.id);
   const isAdmin = currentUser?.role === "admin";
   return (
@@ -23,6 +40,17 @@ export default function GroupDetails() {
         </h2>
         <AddEnrtyModal groupId={groupId} />
       </div>
+      <Card className="bg-white/5 border hover:shadow-lg border-white/10 backdrop-blur-xl rounded-2xl">
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center text-white font-medium mb-3">
+            <CardTitle className=" text-2xl font-serif font-bold text-white/90">
+                {groups?.name.toUpperCase()}
+              </CardTitle>
+              {/* INVITE BUTTON */}
+              <InviteButton code={groups?.invite_code} />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* MEMBERS */}
       <Card className="bg-white/5 border hover:shadow-lg border-white/10 backdrop-blur-xl rounded-2xl">
