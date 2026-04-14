@@ -8,6 +8,7 @@ import OnBoarding from "@/pages/onBoarding";
 import AppLayout from "@/components/layout/appLayout";
 import GroupDetails from "@/features/groups/pages/groupDetail";
 import GroupList from "@/features/groups/pages/groupList";
+import CreateGroup from "@/features/groups/components/createGroup";
 
 export default function AppRoutes(){
     return(

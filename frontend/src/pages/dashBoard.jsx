@@ -7,6 +7,7 @@ import StatCard from "@/components/ui/custom/StatCard";
 import EmptyState from "@/components/ui/custom/EmptyState";
 import { useGroups } from "@/features/groups/useGroups";
 import useDashbordstat from "@/hooks/useUsers";
+import CreateGroup from "@/features/groups/components/createGroup";
 
 export default function Dashboard() {
   const{user} = useAuth();
@@ -30,9 +31,11 @@ export default function Dashboard() {
       <div className="space-y-4 mt-6">
         <div className="flex justify-between items-center">
         <h2 className="text-xl">Your Groups</h2>
-        <Button onClick={()=> navigate("/groups")} className="rounded-xl gap-2 shadow-sm hover:scale-105 transition bg-white/80 gap-2 text-black hover:bg-gray-200">
+        {/* <Button onClick={()=> navigate("/add-groups")} className="rounded-xl gap-2 shadow-sm hover:scale-105 transition bg-white/80 gap-2 text-black hover:bg-gray-200">
           <PlusCircle size={20}/> Create Group
         </Button>
+         */}
+         <CreateGroup onGroupCreated={()=> window.location.reload()}/>
         </div>
         {groups === 0 ? (
           <EmptyState title="No groups found ('~')" 

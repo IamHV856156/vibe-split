@@ -14,9 +14,9 @@ export default function InviteButton({ code }) {
   return (
     <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-2 rounded-xl backdrop-blur-md">
       <span className="text-lg font-mono text-white tracking-tight">
-        {code}  
+        {code}
       </span>
-        <Button size="icon" variant="ghost" onClick={copyCode} className="text-gray-400 hover:text-white" >
+        <Button size="icon" variant="ghost" onClick={copyCode} className="text-gray-400  hover:text-white" >
           {copied ? (
             <Check size={16} className="text-emerald-500" />
           ) : (
