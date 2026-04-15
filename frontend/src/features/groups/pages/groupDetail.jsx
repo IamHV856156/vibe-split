@@ -14,6 +14,7 @@ export default function GroupDetails() {
   const {groupId} = useParams();
   const {user} = useAuth();
   const { members } = useMembers(groupId);
+  const uniqueMember = Array.from(new Map(members.map((m)=>[m.id,m])).values());
   const [groups,setGroups] = useState(null);
   
   useEffect(()=>{
@@ -55,9 +56,14 @@ export default function GroupDetails() {
       {/* MEMBERS */}
       <Card className="bg-white/5 border hover:shadow-lg border-white/10 backdrop-blur-xl rounded-2xl">
         <CardContent className="p-4 ">
-          <div className="flex items-center gap-2 text-white font-medium mb-3">
-            <Users size={16} />
-            Members ({members.length})
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2 text-white font-semibold mb-3">
+              <Users size={20} />
+              Members 
+            </div>
+            <span className="text-sm text-white/80 ">
+              {uniqueMember.length}
+            </span>
           </div>
           <MemberList groupId={groupId} createdBy={user.id} />
         </CardContent>

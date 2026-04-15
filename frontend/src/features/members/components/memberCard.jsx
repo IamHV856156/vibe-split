@@ -5,7 +5,6 @@ import { Avatar } from "@/components/ui/avatar";
 import { Crown, User } from "lucide-react";
 
 const MemberCard = ({member, isAdmin}) =>{
-    // const {isAdmin} =member.role === "admin"
     return(
         <div className="w-full">
             <div className="p-px rounded-2xl bg-linear-to-br from-violet-500/20 via-transparent to-blue-500/20">
@@ -21,7 +20,6 @@ const MemberCard = ({member, isAdmin}) =>{
                             {/* name with role */}
                             <div>
                                 <p className="font-medium text-white text-sm">{member.name}</p>
-                                {/* <p className="text-xs text-gray-500 flex items-center gap-1"></p> */}
                             </div>
                         </div>
         
