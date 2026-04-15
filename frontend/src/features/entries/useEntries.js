@@ -9,13 +9,13 @@ export const useEntries = (groupId) => {
     const deleteEntry = async (id) => {
         const { error } = await deleteEntryService(id);
         if (!error) {
-            fetchEntries(); // 🔥 auto refresh
+            fetchEntries(); //  auto refresh
             }
         };
     const updateEntry = async (id, updates) => {
         const { error } = await updateEntryService(id, updates);
         if (!error) {
-            fetchEntries(); // 🔥 auto refresh
+            fetchEntries(); //  auto refresh
             }
         };
     const fetchEntries = async () =>{
@@ -34,8 +34,8 @@ export const useEntries = (groupId) => {
             return;
         }
         fetchEntries();
-        //realtime connections
-        const channel = supabase.channel(`entries-${groupId}`).on("postgres_changes",{
+        //new realtime connections every time
+        const channel = supabase.channel(`entries-${groupId}-${Date.now()}`).on("postgres_changes",{
             event:"*",
             schema:"public",
             table:"entries",
@@ -45,7 +45,7 @@ export const useEntries = (groupId) => {
             fetchEntries();
         }
     ).subscribe();
-
+    
     return ()=> {
         supabase.removeChannel(channel)
     };

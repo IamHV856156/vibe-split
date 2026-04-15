@@ -4,11 +4,12 @@ import { useMembers } from "@/features/members/useMembers";
 import EntryList from "@/features/entries/components/entryList";
 import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 import MemberList from "@/features/members/components/MemberList";
-import { List, Users } from "lucide-react";
+import { Currency, List, Users } from "lucide-react";
 import { Card,CardContent,CardTitle } from "@/components/ui/card";
 import { getGroupById } from "../groupServices";
 import { useEffect, useState } from "react";
 import InviteButton from "../components/inviteButton";
+import Summary from "@/features/savings/components/summary";
 
 export default function GroupDetails() {
   const {groupId} = useParams();
@@ -68,7 +69,16 @@ export default function GroupDetails() {
           <MemberList groupId={groupId} createdBy={user.id} />
         </CardContent>
       </Card>
-
+      {/* Summary and settelmet */}
+      <Card className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl">
+        <CardContent className="p-4">
+          <div className="flex items-center gap-2 text-white font-medium mb-3">
+            <Currency size={20}/>
+            OverView
+          </div>
+          <Summary groupId={groupId} />
+        </CardContent>
+      </Card>
       {/* ENTRIES */}
       <Card className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl">
         <CardContent className="p-4">

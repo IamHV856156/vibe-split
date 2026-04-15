@@ -3,8 +3,6 @@ import { useGroups } from "../useGroups";
 import GroupCard from "../components/groupCard";
 import EmptyState from "@/components/ui/custom/EmptyState";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
 import CreateGroup from "../components/createGroup";
 
 export default function GroupList(){
