@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { addEntry } from "../entryService";
 import { useAuth } from "@/context/authContext";
-import { Dialog,DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog,DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -50,6 +50,7 @@ const AddEnrtyModal = ({groupId}) =>{
             <DialogContent className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
                 <DialogHeader>
                     <DialogTitle className="text-white text-lg">Add New Entry</DialogTitle>
+                    <DialogDescription className="text-gray-400">Add a new expense or saving entry to this group</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 mt-4">
                     {/* amount */}

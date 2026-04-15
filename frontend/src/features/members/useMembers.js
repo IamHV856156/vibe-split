@@ -8,10 +8,10 @@ export const useMembers = (groupid) =>{
             return;
         }
         const {data,error} =await getMembers(groupid);
-        console.log("MEMBERS RAW:", data);
 
         if (!error && data) {
-            const clean = data.map((m)=>m.profiles).filter(Boolean);
+            const clean = data.map((m)=>({...m.profiles,role: m.role,user_id:m.user_id})).filter(Boolean);
+            console.log("role:",clean);
 
             setMembers(clean);
         }
