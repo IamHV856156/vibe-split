@@ -1,51 +1,78 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { updateEntry } from "../entryService";
+import { Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Pencil} from "lucide-react";
 
-const EditEntryModal = ({ entry, onClose, onSave }) => {
+const EditEntryModal = ({entry,onClose}) => {
   const [amount, setAmount] = useState("");
-  const [type, setType] = useState("expense");
   const [desc, setDesc] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  
+  // users previous data will we shown
   useEffect(() => {
     if (entry) {
       setAmount(entry.amount);
-      setType(entry.type);
       setDesc(entry.description);
     }
   }, [entry]);
 
-  const handleSave = () => {
-    onSave(entry.id, {
+  const handleSave = async () => {
+    // check whether any field was remained empty or not
+    if (!amount || !desc) {
+      return alert("Please fill all fields");
+    }
+    setLoading(true);
+
+    //calls update entry function from entryServices
+    const { error } = await updateEntry(entry.id, {
       amount: Number(amount),
-      type,
       description: desc,
     });
-    onClose();
-  };
+    setLoading(false);
 
-  if (!entry) return null;
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Entry updated");
+      setClose();
+    }
+  };
+  if (!entry){ 
+    return (null);
+  }
 
   return (
-    <div style={{ border: "1px solid black", padding: "10px", marginTop: "10px" }}>
-      <h3>Edit Entry</h3>
+    <Dialog open={!!entry} onOpenChange={onClose}>
+      <DialogContent className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+        {/* Header */}
+        <DialogHeader>
+          <DialogTitle className="text-white flex items-center gap-2">
+            <Pencil size={18} /> Edit Entry
+          </DialogTitle>
+          <DialogDescription className="text-gray-400">
+            Update your expense
+          </DialogDescription>
+        </DialogHeader>
 
-      <input
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
+        <div className="space-y-4 mt-4">
+          {/* Amount */}
+          <Input placeholder="Enter Amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)}
+            className="bg-white/5 border-white/20 text-white placeholder:text-gray-400"/>
+          {/* Description */}
+          <Input placeholder="Description" value={desc} onChange={(e) => setDesc(e.target.value)}
+            className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"/>
 
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="expense">Expense</option>
-        <option value="saving">Saving</option>
-      </select>
+          {/* Save change btn */}
+            <Button onClick={handleSave} disabled={loading}
+              className="flex-1 bg-purple-600 hover:bg-purple-700 rounded-xl">
+              {loading ? "Saving..." : "Save Changes"}
+            </Button>
 
-      <input
-        value={desc}
-        onChange={(e) => setDesc(e.target.value)}
-      />
-
-      <button onClick={handleSave}>Save</button>
-      <button onClick={onClose}>Cancel</button>
-    </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

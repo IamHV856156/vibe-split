@@ -21,7 +21,6 @@ const EntryList = ({groupId,isAdmin}) =>{
     return(            
         <div className="space-y-6">
             <div className="space-y-3">
-            <EditEntryModal entry={editingEntry} onClose={() => setEditingEntry(null)} onSave={updateEntry}/>
             {entries.map((e)=>{
                 const isOwned = e.user_id === user?.id;
                 const isSaving = e.type === "saving";
@@ -46,7 +45,8 @@ const EntryList = ({groupId,isAdmin}) =>{
                                         className="px-3 py-1 text-sm bg-red-500/10 text-red-400 hover:bg-red-500/30 rounded-lg"> Delete
                                 </Button>
                                 {(isAdmin || (isOwned && !isSaving)) ? (
-                                    <Button onClick={() => <EditEntryModal/>} 
+                                    
+                                    <Button onClick={() => setEditingEntry(e)} 
                                             className="px-3 py-1 text-sm bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/30">Edit
                                     </Button>
                                 ):(
@@ -61,6 +61,7 @@ const EntryList = ({groupId,isAdmin}) =>{
             );
         })}
             </div>
+            <EditEntryModal entry={editingEntry} onClose={()=>setEditingEntry(null)}/>
         </div>
     );
 };
