@@ -20,7 +20,6 @@ const EntryList = ({groupId,isAdmin}) =>{
     }
     return(            
         <div className="space-y-6">
-            {/* entries view */}
             <div className="space-y-3">
             <EditEntryModal entry={editingEntry} onClose={() => setEditingEntry(null)} onSave={updateEntry}/>
             {entries.map((e)=>{
