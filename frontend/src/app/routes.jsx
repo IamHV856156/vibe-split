@@ -8,14 +8,13 @@ import OnBoarding from "@/pages/onBoarding";
 import AppLayout from "@/components/layout/appLayout";
 import GroupDetails from "@/features/groups/pages/groupDetail";
 import GroupList from "@/features/groups/pages/groupList";
-import CreateGroup from "@/features/groups/components/createGroup";
 
 export default function AppRoutes(){
     return(
         <BrowserRouter>
         <Routes>
             {/* Public */}
-            <Route path="/" element={<Navigate to="/Login"/>}/>
+            <Route path="/" element={<Navigate to="/Signup">}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
             <Route path="/onboarding" element={<OnBoarding/>}/>
