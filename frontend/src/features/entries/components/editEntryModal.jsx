@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil} from "lucide-react";
 
-const EditEntryModal = ({entry,onClose}) => {
+const EditEntryModal = ({entry,onClose,onSuccess}) => {
   const [amount, setAmount] = useState("");
   const [desc, setDesc] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,8 @@ const EditEntryModal = ({entry,onClose}) => {
       alert(error.message);
     } else {
       alert("Entry updated");
-      setClose();
+      onSuccess();
+      onClose();
     }
   };
   if (!entry){ 

@@ -6,7 +6,7 @@ import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 import MemberList from "@/features/members/components/MemberList";
 import { Currency, List, Users } from "lucide-react";
 import { Card,CardContent,CardTitle } from "@/components/ui/card";
-import { getGroupById } from "../groupServices";
+import { getGroupById, getGroups } from "../groupServices";
 import { useEffect, useState } from "react";
 import InviteButton from "../components/inviteButton";
 import Summary from "@/features/savings/components/summary";
@@ -31,7 +31,7 @@ export default function GroupDetails() {
     }
   },[groupId]);
   const currentUser = (members || []).find((m) => m.user_id === user?.id);
-  const isAdmin = currentUser?.role === "admin";
+  const isAdmin = groups?.created_by === user?.id;
   return (
     <div className="w-full px-4 md:px-6 space-y-6">
 
@@ -66,7 +66,7 @@ export default function GroupDetails() {
               {uniqueMember.length}
             </span>
           </div>
-          <MemberList groupId={groupId} createdBy={user.id} />
+          <MemberList groupId={groupId} createdBy={groups?.created_by} />
         </CardContent>
       </Card>
       {/* Summary and settelmet */}

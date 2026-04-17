@@ -6,6 +6,7 @@ import { useMembers } from "@/features/members/useMembers";
 
 export default function GroupCardSmall({group}){
     const {members =[]}=useMembers(group.id)
+    const uniqueMember = Array.from(new Map(members.map((m)=>[m.id,m])).values());
     console.log("member:",members);
     const navigate = useNavigate();
     return(
@@ -28,7 +29,7 @@ export default function GroupCardSmall({group}){
                     </CardDescription>
                 </div>
                 <Badge variant="secondary" className="h-6 w-6 rounded-full font-bold text-sm">
-                    {members.length}
+                    {uniqueMember.length}
                 </Badge>
             </CardHeader>
             <CardContent>

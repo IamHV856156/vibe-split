@@ -1,7 +1,6 @@
 import { useMembers } from "@/features/members/useMembers";
 import MemberCard from "@/features/members/components/memberCard";
 import { Card, CardContent } from "@/components/ui/card";
-import { User } from "lucide-react";
 import EmptyState from "@/components/ui/custom/EmptyState";
 import InviteButton from "@/features/groups/components/inviteButton";
 const MemberList = ({groupId,createdBy}) =>{
