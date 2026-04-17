@@ -7,9 +7,11 @@ import AddEnrtyModal from "./addEnrtyModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LockIcon } from "lucide-react";
+import DeleteEntryModal from "./deleteEntryModal";
 const EntryList = ({groupId,isAdmin}) =>{
-    const { entries, loading, deleteEntry, updateEntry } = useEntries(groupId);
+    const { entries, loading} = useEntries(groupId);
     const [editingEntry, setEditingEntry] = useState(null);
+    const [deletingEntry, setDeletingEntry] = useState(null);
     const {user} = useAuth();
   
     if (loading) {
@@ -41,7 +43,7 @@ const EntryList = ({groupId,isAdmin}) =>{
                             </div>
                             {/* right */}
                             <div className="flex gap-2">
-                                <Button onClick={() => deleteEntry(e.id)} 
+                                <Button onClick={() => setDeletingEntry(e)} 
                                         className="px-3 py-1 text-sm bg-red-500/10 text-red-400 hover:bg-red-500/30 rounded-lg"> Delete
                                 </Button>
                                 {(isAdmin || (isOwned && !isSaving)) ? (
@@ -62,6 +64,7 @@ const EntryList = ({groupId,isAdmin}) =>{
         })}
             </div>
             <EditEntryModal entry={editingEntry} onClose={()=>setEditingEntry(null)}/>
+            <DeleteEntryModal entry={deletingEntry} onClose={()=>setDeletingEntry(null)}/>
         </div>
     );
 };

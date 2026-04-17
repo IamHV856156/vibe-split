@@ -10,6 +10,6 @@ export const updateEntry = async (id, updates) => {
 };
 
 export const deleteEntry = async (id) => {
-  return await supabase.from("entries").delete().eq("id", id);
+  return await supabase.from("entries").delete().eq("id", id).select();
   
 };

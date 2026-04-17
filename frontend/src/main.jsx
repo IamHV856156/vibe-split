@@ -9,5 +9,5 @@ ReactDom.createRoot(document.getElementById('root')).render(
     <Providers>
     <AppRoutes />
     </Providers>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

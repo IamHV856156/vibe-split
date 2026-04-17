@@ -3,7 +3,6 @@ import { calculateBalance, calculateSplit } from "@/utils/calculation";
 import { calculateSettlement } from "@/utils/settelment";
 import { useMembers } from "@/features/members/useMembers";
 import { Card, CardContent } from "@/components/ui/card";
-import AddEnrtyModal from "@/features/entries/components/addEnrtyModal";
 
 const Summary = ({groupId}) =>{
     const { entries, loading} = useEntries(groupId);
@@ -17,11 +16,8 @@ const Summary = ({groupId}) =>{
     );
   
     if (loading) {
-        return (<p className="text-gray-400">Loading entries....</p>);
+        return (<p className="text-gray-400">Loading summary....</p>);
     }
-    // if (!loading && entries.length === 0) {
-    //     return (<AddEnrtyModal groupId={groupId}/>);
-    // }
     return(            
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -49,7 +45,7 @@ const Summary = ({groupId}) =>{
                         <p key={`balance-${user}`} className=" flex justify-between text-sm">
                             <span>{user.slice(0,15)}  :</span> 
                             <span className={amount >0 ? "text-green-600 ml-1" : "text-red-600 ml-1"}>
-                                {amount >0 ? `gets INR ${amount}` : `owes INR ${Math.abs(amount)}`}
+                                {amount >0 ? `gets INR ${amount.toFixed(2)}` : `owes INR ${Math.abs(amount.toFixed(2))}`}
                             </span>
                         </p>
                     ))}
@@ -61,10 +57,10 @@ const Summary = ({groupId}) =>{
                 <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
                 <CardContent className="p-4 space-y-2 text-white">
                     <h3 className="text-lg font-semibold">Settlment</h3>
-                    {settlment.length === 0 ? (
+                    {settlment?.length === 0 ? (
                         <p className="text-emerald-400">All Settled</p>
                     ):(
-                        settlment.map((s,i)=>{
+                        settlment?.map((s,i)=>{
                         return(
                             <p key={`${s.from}-${s.to}-${i}`} className="text-sm">
                                         <span className="font-medium">
