@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getEntries, deleteEntry as deleteEntryservice, updateEntry as updateEntryservice } from "./entryService";
-// import { supabase } from "@/services/supabaseClient";
 
 export const useEntries = (groupId) => {
     const [entries, setEntries] = useState([]);

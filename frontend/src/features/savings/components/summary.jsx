@@ -6,11 +6,12 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const Summary = ({groupId}) =>{
     const { entries, loading} = useEntries(groupId);
-    const {totalExpense, totalSaving, balance} = calculateBalance(entries);
-    const {totalExpense: splitExpense, perPerson, balances} = calculateSplit(entries);
-    const settlment = calculateSettlement(entries);
     const { members } = useMembers(groupId);
-
+    const uniqueMember = Array.from(new Map(members.map((m)=>[m.id,m])).values());
+    const {totalExpense, totalCollected, balance} = calculateBalance(entries,uniqueMember);
+    const settlment = calculateSettlement(entries,uniqueMember.length);
+    const {totalSpend, perPerson, balances} = calculateSplit(entries);
+    
     const userMap = Object.fromEntries(
         members.map(m => [m.id, m.name])
     );
@@ -25,55 +26,68 @@ const Summary = ({groupId}) =>{
                 {/* total expense,saving(jo admin set kar sakega foe each member in his group) and remaing balance */}
                 <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
                 <CardContent className="p-4 space-y-2 text-white">
-                    <h2 className="text-lg font-semibold">Summary</h2>
-                    <p className="text-red-400">Total Paid: INR{totalExpense}</p>
-                    <p className="text-emerald-400">Saving: INR{totalSaving}</p>
-                    <p className="font-medium text-blue-400">Balance: INR{balance}</p>
+                    <h2 className="text-lg font-semibold border-b border-white/10 pb-1">Summary</h2>
+                        <div>
+                            <p className="flex justify-between text-sm">
+                                <span className="text-gray-400">Total Collected:</span>
+                                <span className="text-emerald-400">INR {totalCollected}</span>
+                            </p>
+                            <p className="flex justify-between text-sm">
+                                <span className="text-gray-400">Total Spend:</span>
+                                <span className="text-red-400">INR {totalExpense}</span>
+                            </p>
+                            <hr className="border-white/5 my-2"/>
+                            <p className="flex justify-between font-bold">
+                                <span className="text-gray-400">Remaining:</span>
+                                <span className="text-blue-400">INR {balance}</span>
+                            </p>
+                        </div>
                 </CardContent>
                 </Card>
     
                 {/* Split Summary */}
                 <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
                 <CardContent className="p-4 space-y-2 text-white">
-                    <h3 className="text-lg font-semibold">Split Summary</h3>
-    
-                    <p>Total Expense: INR{splitExpense}</p>
-                    <p>Per Person: INR{Number(perPerson).toFixed(2)}</p>
-    
-                    <div className="space-y-1">
-                    {Object.entries(balances).map(([user,amount])=>(
-                        <p key={`balance-${user}`} className=" flex justify-between text-sm">
-                            <span>{user.slice(0,15)}  :</span> 
-                            <span className={amount >0 ? "text-green-600 ml-1" : "text-red-600 ml-1"}>
-                                {amount >0 ? `gets INR ${amount.toFixed(2)}` : `owes INR ${Math.abs(amount.toFixed(2))}`}
-                            </span>
-                        </p>
-                    ))}
-                    </div>
+                    <h3 className="text-lg font-semibold border-b border-white/10 pb-1">Split Summary</h3>
+                    <p className="text-sm pt-2 flex justify-between items-center">Total Spend:
+                        <span className="font-bold">INR {totalSpend}</span> 
+                    </p>
+                    <p className="text-sm text-gray-400 italic flex justify-between items-center">Divided By {uniqueMember.length} members: 
+                        <span className="text-sm font-bold text-white mt-2">INR {Number(perPerson).toFixed(2)}</span>
+                    </p>
                 </CardContent>
                 </Card>
     
                 {/* settlment view */}
                 <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
                 <CardContent className="p-4 space-y-2 text-white">
-                    <h3 className="text-lg font-semibold">Settlment</h3>
-                    {settlment?.length === 0 ? (
-                        <p className="text-emerald-400">All Settled</p>
-                    ):(
-                        settlment?.map((s,i)=>{
-                        return(
-                            <p key={`${s.from}-${s.to}-${i}`} className="text-sm">
-                                        <span className="font-medium">
+                    <h3 className="text-lg font-semibold border-b border-white/10 pb-1">Settlment</h3>
+                    <div className="pt-2 space-y-3">
+                        {settlment?.length === 0 ? (
+                            <p className="text-emerald-400 text-sm italic">All Settled <span>('-')</span></p>
+                        ):(
+                            settlment?.map((s,i)=>{
+                                return(
+                                <div key={`${s.from}-${s.to}-${i}`} className="text-sm bg-white/5 p-2 rounded-lg border border-white/10">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-400 font-medium">
                                             {userMap[s.from] || "Unknown"}
+                                        </span> 
+                                        <span className="text-gray-400 text-xs">
+                                            pays 
                                         </span>
-                                        {" "} pays INR {Math.round(s.amount)} to{" "}
-                                        <span className="font-medium">
+                                        <span className="text-emerald-400font-medium">
                                             {userMap[s.to] || "Unknown"}
                                         </span>
-                                    </p>
+                                    </div>
+                                    <div className="text-center font-bold text-white mt-1">
+                                        INR {Math.round(s.amount)} to{" "}
+                                    </div>
+                                </div>
                                 );
                             })
                         )}
+                    </div>
                 </CardContent>
                 </Card>
             </div>

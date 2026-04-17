@@ -1,14 +1,19 @@
-export const calculateSettlement = (entries) => {
+export const calculateSettlement = (entries,member) => {
 
-    if (!Array.isArray(entries) || entries.length == 0) {
-        return;
+    if (!Array.isArray(entries) || !Array.isArray(member) || member.length === 0) {
+        return[];
     }
 
+  const memberCount = member.length;
   const balances = {};
 
+
+  member.forEach(m => {
+    balances[m.user_id] = 0;
+  });
   // calculate net balance per user
   entries.forEach((e) => {
-    if (e.type !== "expense" ) {
+    if (e.type !== "paid" ) {
         return;
     }
     const user = e.user_id;
@@ -20,15 +25,15 @@ export const calculateSettlement = (entries) => {
       balances[user] += amount; // paid
   });
 
-  const users = Object.keys(balances);
-  if(users.length === 0){
+  const totalPaid = Object.values(balances).reduce((sum, amt) => sum + amt, 0);
+  if (totalPaid === 0) {
     return[];
   }
-  const totalExpense = users.reduce((sum, u) => sum + balances[u], 0);
-  const perPerson = totalExpense / users.length;
-
+  const perPerson = totalPaid / memberCount;
+  
   // net owed
   const net = {};
+  const users = Object.keys(balances);
   users.forEach((u) => {
     net[u] = balances[u] - perPerson;
   });
@@ -39,7 +44,7 @@ export const calculateSettlement = (entries) => {
 
   Object.entries(net).forEach(([user, amt]) => {
     if (amt > 0) creditors.push({ user, amount: amt });
-    if (amt < 0) debtors.push({ user, amount: -amt });
+    if (amt < 0) debtors.push({ user, amount: Math.abs(amt) });
   });
 
   // settlement
@@ -53,11 +58,13 @@ export const calculateSettlement = (entries) => {
 
     const payAmount = Math.min(d.amount, c.amount);
 
-    settlements.push({
-      from: d.user,
-      to: c.user,
-      amount: payAmount,
-    });
+    if (payAmount>0) { 
+      settlements.push({
+        from: d.user,
+        to: c.user,
+        amount: payAmount,
+      });
+    }
 
     d.amount -= payAmount;
     c.amount -= payAmount;
