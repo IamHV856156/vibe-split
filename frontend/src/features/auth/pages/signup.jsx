@@ -34,8 +34,7 @@ export default function Signup(){
                     name:name,
                 },
             ]);
-        }
-        alert("Check your email to confirm Signup");   
+        }  
         navigate("/login");
         } catch (error) {
             console.error("Signup error:",error);
