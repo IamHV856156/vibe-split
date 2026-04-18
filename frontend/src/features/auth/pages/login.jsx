@@ -71,25 +71,21 @@ export default function Login(){
                 </Button>
 
               {/* Divider */}
-          <div className="relative py-2">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-white/10" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-transparent px-2 text-gray-500">Or</span>
-            </div>
-          </div>
-          {/* Signup Navigation */}
-          <div className="text-center space-y-3">
-            <p className="text-gray-400 text-sm">New to VibeSplit?</p>
-            <Button
-              variant="outline"
-              onClick={() => navigate("/signup")}
-              className="w-full h-12 rounded-xl border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white transition-all"
-            >
-              Create an Account
-            </Button>
-          </div>
+              <div className="relative py-2">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-white/10" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-transparent px-2 text-gray-500">Or</span>
+                </div>
+              </div>
+              {/* Signup Navigation */}
+              <div className="text-center space-y-3">
+                <p className="text-gray-400 text-sm">New to VibeSplit?</p>
+                <Button variant="outline" onClick={() => navigate("/signup")}
+                        className="w-full h-12 rounded-xl border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white transition-all">
+                  Create an Account</Button>
+              </div>
             </CardContent>
             </Card>
         </div>
