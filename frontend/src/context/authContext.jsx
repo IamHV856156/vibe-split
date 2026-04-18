@@ -17,21 +17,14 @@ useEffect(() => {
       .eq("id", user.id)
       .maybeSingle();
 
-    console.log("PROFILE:", profile, error);
-
     if (!profile) {
-      console.log("CREATING PROFILE...");
-
-      const { error: insertError } = await supabase
-        .from("profiles")
-        .insert([
+       await supabase.from("profiles").insert([
           {
             id: user.id,
             name: user.user_metadata?.name || "user",
           },
         ]);
 
-      console.log("PROFILE INSERT:", insertError);
     }
   };
 
