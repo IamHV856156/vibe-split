@@ -91,6 +91,27 @@ export default function Signup(){
                 <Button onClick={handleSignup} className="w-full h-12 z-10 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold transition-all hover:scale-[1.02]">
                   SignUp Now
                 </Button>
+
+              {/* Divider */}
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-white/10" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-transparent px-2 text-gray-500">Or</span>
+            </div>
+          </div>
+          {/* login navigation */}
+          <div className="text-center space-y-3">
+            <p className="text-gray-400 text-sm">Already have an account?</p>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/login")}
+              className="w-full h-12 rounded-xl border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white transition-all"
+            >
+              Login to <span className="italic">VibeSplit</span>
+            </Button>
+          </div>
             </CardContent>
             </Card>
         </div>
