@@ -20,6 +20,7 @@ export const signUp = (email, password, name) => {
       data:{
         name:name,
       },
+      emailRedirectTo:'https://vibe-split.vercel.app/onboarding'
     },
   });
 };
