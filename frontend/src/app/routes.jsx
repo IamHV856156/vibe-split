@@ -14,7 +14,7 @@ export default function AppRoutes(){
         <BrowserRouter>
         <Routes>
             {/* Public */}
-            <Route path="/" element={<Navigate to="/login"/>}/>
+            <Route path="/" element={<Navigate to="/signup"/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
             <Route path="/onboarding" element={<OnBoarding/>}/>
