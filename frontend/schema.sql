@@ -1,100 +1,86 @@
--- groups table 
-CREATE TABLE groups (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  invite_code TEXT UNIQUE,
-  created_by uuid REFERENCES auth.users(id),
-  created_at TIMESTAMP DEFAULT now()
+-- 1. TABLES & RELATIONSHIPS
+
+-- Profiles
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
 );
 
---Members table
-CREATE TABLE members (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id uuid REFERENCES auth.users(id),
-  group_id uuid REFERENCES groups(id),
-  role TEXT DEFAULT 'member',
-  joined_at TIMESTAMP DEFAULT now()
+-- Groups
+CREATE TABLE IF NOT EXISTS public.groups (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    invite_code TEXT UNIQUE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
 );
 
---Profiles table
-CREATE TABLE profiles (
-  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  name TEXT,
-  created_at TIMESTAMP DEFAULT now()
+-- Members
+CREATE TABLE IF NOT EXISTS public.members (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    group_id UUID REFERENCES public.groups(id) ON DELETE CASCADE NOT NULL,
+    role TEXT DEFAULT 'member' CHECK (role IN ('admin', 'member')),
+    joined_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    UNIQUE(user_id, group_id)
 );
 
--- entries table
-CREATE TABLE entries (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  group_id uuid REFERENCES groups(id) ON DELETE CASCADE,
-  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
-  amount NUMERIC NOT NULL,
-  type TEXT CHECK (type IN ('expense', 'saving')) NOT NULL,
-  description TEXT,
-  created_at TIMESTAMP DEFAULT now()
+-- Entries
+CREATE TABLE IF NOT EXISTS public.entries (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    group_id UUID REFERENCES public.groups(id) ON DELETE CASCADE NOT NULL,
+    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    amount NUMERIC NOT NULL CHECK (amount > 0),
+    type TEXT CHECK (type IN ('expense', 'saving')) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
 );
 
---test entry
-insert into entries (group_id, user_id, amount, type, description)
-values (
-  '1aac8c57-910d-4083-8b68-c8f08b5f4d6f',
-  '206ee474-1f4c-4558-906f-980ae24cb8fa',
-  100,
-  'expense',
-  'test expense'
+-- 2. RLS POLICIES
+
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.groups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.entries ENABLE ROW LEVEL SECURITY;
+
+-- Profiles
+CREATE POLICY "Public profiles are viewable" ON public.profiles FOR SELECT USING (true);
+CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
+CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+
+-- Groups
+CREATE POLICY "Members can view their groups" ON public.groups 
+FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.members WHERE group_id = public.groups.id AND user_id = auth.uid())
 );
---RLS Policies
+CREATE POLICY "Auth users can create groups" ON public.groups FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
---for groups table
-ALTER TABLE groups ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users can create groups"
-ON groups FOR INSERT
-WITH CHECK (auth.uid() = created_by);
+-- Members
+CREATE POLICY "Members can view roster" ON public.members 
+FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.members m2 WHERE m2.group_id = public.members.group_id AND m2.user_id = auth.uid())
+);
+CREATE POLICY "Users can join via invite" ON public.members FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
-CREATE POLICY "Users can view their groups"
-ON groups FOR SELECT
-USING (auth.uid() = created_by);
-
---for members table
-ALTER TABLE members ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can join group"
-ON members FOR INSERT
-WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can view members"
-ON members FOR SELECT
-USING (true);
-
---for profile table
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can insert their profile"
-ON profiles FOR INSERT
-WITH CHECK (auth.uid() = id);
-
-CREATE POLICY "Users can view profiles"
-ON profiles FOR SELECT
-USING (true);
-
---for entries table
-
-ALTER TABLE entries ENABLE ROW LEVEL SECURITY;
-
--- members can insert
-CREATE POLICY "Members can add entries"
-ON entries
-FOR INSERT
-WITH CHECK (
-  auth.uid() = user_id
+-- Entries (The Secure Layer)
+CREATE POLICY "Group members can view entries" ON public.entries 
+FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.members WHERE group_id = entries.group_id AND user_id = auth.uid())
 );
 
--- members can view entries of their groups
-CREATE POLICY "Members can view entries"
-ON entries
-FOR SELECT
-USING (
-  group_id IN (
-    SELECT group_id FROM members WHERE user_id = auth.uid()
-  )
+CREATE POLICY "Group members can insert entries" ON public.entries 
+FOR INSERT WITH CHECK (
+    EXISTS (SELECT 1 FROM public.members WHERE group_id = entries.group_id AND user_id = auth.uid())
 );
+
+-- RESTRICTIVE POLICY: Users can only Update or Delete entries they created
+CREATE POLICY "Restrictive: Only owner can modify" ON public.entries 
+AS RESTRICTIVE 
+FOR ALL USING (auth.uid() = user_id);
+
+-- 3. REALTIME CONFIG
+BEGIN;
+  DROP PUBLICATION IF EXISTS supabase_realtime;
+  CREATE PUBLICATION supabase_realtime FOR TABLE public.groups, public.members, public.entries;
+COMMIT;
