@@ -50,7 +50,7 @@ const EntryList = ({groupId,isAdmin}) =>{
                                         </div>
                                         )}
                                         <div className="flex items-center gap-2">
-                                            <Badge className={e.type === "expense" ? "bg-red-500/20 text-red-400 text-sm hover:scale-[1.03] transition duration-300" : "bg-emerald-500/20 text-emerald-400"} >
+                                            <Badge className={e.type === "spend" ? "bg-red-500/20 text-red-400 text-sm hover:scale-[1.03] transition duration-300" : "bg-emerald-500/20 text-emerald-400"} >
                                                 {e.type.toUpperCase()}
                                             </Badge>
                                             <span className="text-white font-medium">
