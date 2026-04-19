@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/utils/formatter";
 
 export default function SavingsCard({ entries }){
-    // 1. Calculate Individual Savings Logic
+    // Individual Savings(remainig balance from there balance)
     const userSaving = {};
     entries.forEach((e) => {
         const userName = e.profiles?.name || "Unknown";
