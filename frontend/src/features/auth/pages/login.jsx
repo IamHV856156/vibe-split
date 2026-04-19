@@ -5,7 +5,7 @@ import { useAuth } from "@/context/authContext";
 import { Card,CardTitle,CardContent,CardHeader,CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, KeyRound, LockIcon, LockOpen, LogIn, Mail, MailOpen,} from "lucide-react";
+import { Eye, EyeOff, KeyRound,Mail, MailOpen,} from "lucide-react";
 
 export default function Login(){
     const[email, setEmail] = useState("");

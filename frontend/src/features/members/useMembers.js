@@ -11,7 +11,6 @@ export const useMembers = (groupid) =>{
 
         if (!error && data) {
             const clean = data.map((m)=>({...m.profiles,role: m.role,user_id:m.user_id})).filter(Boolean);
-            console.log("role:",clean);
 
             setMembers(clean);
         }
