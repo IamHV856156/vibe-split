@@ -10,6 +10,7 @@ import { LockIcon } from "lucide-react";
 import DeleteEntryModal from "./deleteEntryModal";
 import { useMembers } from "@/features/members/useMembers";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { formatCurrency } from "@/utils/formatter";
 const EntryList = ({groupId,isAdmin}) =>{
     const { entries, loading,fetchEntries} = useEntries(groupId);
     const [editingEntry, setEditingEntry] = useState(null);
@@ -53,7 +54,7 @@ const EntryList = ({groupId,isAdmin}) =>{
                                                 {e.type.toUpperCase()}
                                             </Badge>
                                             <span className="text-white font-medium">
-                                                INR {e.amount}
+                                                {formatCurrency(e.amount)}
                                             </span>
                                         </div>
                                     <p className="text-lg text-white/80 mt-1">{e.description}</p>

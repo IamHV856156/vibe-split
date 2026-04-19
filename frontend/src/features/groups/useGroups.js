@@ -13,7 +13,6 @@ export const useGroups = (userid) =>{
         setLoading(true);
 
         const {data,error} = await getGroups(userid);
-        console.log("GROUP RAW:", data, error);
         if(!error && data){
             setGroups(data);
         }

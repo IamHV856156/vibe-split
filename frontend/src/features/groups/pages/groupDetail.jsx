@@ -23,7 +23,6 @@ export default function GroupDetails() {
       const{data , error } = await getGroupById(groupId);
       if(!error){
         setGroups(data);
-        console.log("groupName:",error);
       }
     };
     if(groupId){
