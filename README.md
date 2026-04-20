@@ -12,9 +12,12 @@
 
 ## Visual Preview
 
-| Dashboard & Summary | Individual Savings | Smart Settlements |
-| :--- | :--- | :--- |
-|![Dashboard Preview](/frontend//src/assets/dashboard.png) | ![Overview](./frontend/src/assets/overview.png) | ![Join Page](/frontend/src/assets/Join.png) |
+- **Dashboard**
+|![Dashboard Preview](/frontend//src/assets/dashboard.png)
+- **Overview**
+![Overview](./frontend/src/assets/overview.png)
+- **Join Page**
+![Join Page](/frontend/src/assets/Join.png) |
 
 > **Note:** The UI features a custom Glassmorphism theme built on `Shadcn/UI` and `Tailwind CSS`.
 
