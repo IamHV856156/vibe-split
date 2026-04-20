@@ -13,7 +13,7 @@
 ## Visual Preview
 
 - **Dashboard**
-|![Dashboard Preview](/frontend//src/assets/dashboard.png)
+![Dashboard Preview](/frontend//src/assets/dashboard.png)
 - **Overview**
 ![Overview](./frontend/src/assets/overview.png)
 - **Join Page**
